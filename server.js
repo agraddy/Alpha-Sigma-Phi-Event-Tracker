@@ -2,8 +2,8 @@ var express        = require("express"),
     app            = express(),
     bodyParser     = require("body-parser"),
     mongoose       = require("mongoose"),
-    // Event          = require("./models/event"),
-    // populateDB     = require("./populate"),
+    Event          = require("./models/event"),
+    populateDB     = require("./populate"),
     // Comment        = require("./models/comment"),
     passport       = require("passport"),
     LocalStrategy  = require("passport-local"),
@@ -44,24 +44,14 @@ app.use(express.static(__dirname + "/bower_components"));
 // default view engine so we don't need to constantly type ".ejs"
 app.set("view engine", "ejs");
 // app.use(methodOverride("_method"));
+populateDB();
 
 
 app.get("/", function(req, res) {
     res.render("home");
 });
 
-// SCHEMA
 
-var eventSchema = new mongoose.Schema({
-    name: String,
-    datetime: String,
-    place: String,
-    image: String,
-    type: String,
-    desc: String
-});
-
-var Event = mongoose.model("Event", eventSchema);
 
 // Event.create(
 //     {
