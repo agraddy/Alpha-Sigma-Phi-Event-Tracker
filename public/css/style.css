@@ -1,0 +1,19 @@
+.thumbnail img {
+    width: 100%;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+#noLine {
+    text-decoration: none;
+}
+
+#makeInline {
+    display: inline;
+}
+
+.thumbnail .caption-full {
+    padding: 10px;
+}

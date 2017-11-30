@@ -1,0 +1,36 @@
+<% include partials/header %>
+
+<div class="container">
+    <header class="jumbotron">
+        <div class="container">
+            <h1>Events</h1>
+            <p>
+                <a class="btn btn-primary btn-large" href="#">About Page</a>
+            </p>
+            <p>
+                <a class="btn btn-danger btn-large" href="/events/new">Add an Event</a>
+            </p>
+        </div>
+    </header>
+    
+    <div class="row text-center" style="display: flex; flex-wrap: wrap;">
+        <% events.forEach(function(event) { %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                    <img src="<%= event.image %>">
+                    <div class="caption">
+                        <h3><%= event.name %></h3>
+                        <h5>Event Type: <%= event.type %></h5>
+                        <h5>Date & Time: <%= event.datetime %></h5>
+                        <h5>Location: <%= event.place %></h5>
+                    </div>
+                    <p>
+                        <a href="/events/<%= event._id %>" class="btn btn-primary">More Info</a>
+                    </p>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
+<% include partials/footer %>
