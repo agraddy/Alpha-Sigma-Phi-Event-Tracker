@@ -8,7 +8,7 @@ var eventSchema = new mongoose.Schema({
     place: String,
     image: String,
     type: String,
-    desc: String//,
+    desc: String,
     // author: {
     //     id: {
     //         type: mongoose.Schema.Types.ObjectId,
@@ -16,12 +16,12 @@ var eventSchema = new mongoose.Schema({
     //         },
     //         username: String
     // },
-    // comments: [
-    //     {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "Comment"
-    //     }    
-    // ]
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }    
+    ]
 });
 
 // Model

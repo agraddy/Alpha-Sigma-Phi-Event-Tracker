@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var Event    = require("./models/event");
-// var Comment  = require("./models/comment");
+var Comment  = require("./models/comment");
 
 var data = [
         {
@@ -55,19 +55,19 @@ function populateDB(){
                 } else {
                     console.log("added an event");
                     //create a comment
-                    // Comment.create(
-                    //     {
-                    //         text: "Henlo, friend.",
-                    //         author: "Cockatiel"
-                    //     }, function(err, comment){
-                    //         if(err){
-                    //             console.log(err);
-                    //         } else {
-                    //             event.comments.push(comment);
-                    //             event.save();
-                    //             console.log("Created new comment");
-                    //         }
-                    //     });
+                    Comment.create(
+                        {
+                            text: "Henlo, friend.",
+                            author: "Cockatiel"
+                        }, function(err, comment){
+                            if(err){
+                                console.log(err);
+                            } else {
+                                event.comments.push(comment);
+                                event.save();
+                                console.log("Created new comment");
+                            }
+                        });
                 }
             });
         });

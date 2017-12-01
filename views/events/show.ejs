@@ -44,8 +44,24 @@
                         <!--<p>Submitted by: <//%= event.author.username %></p>-->
                     </div>
                 </div>
+                
+                <div class="well">
+                    <div class="text-right">
+                        <a class="btn btn-success" href="/events/<%= event._id %>/comments/new">Say Something!</a>
+                        <hr>
+                    </div>
+                    <% event.comments.forEach(function(comment) { %>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <strong><%= comment.author %></strong>
+                                <span class="pull-right">5 days ago</span>
+                                <p><%= comment.text %></p>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
             </div>
         </div>    
     </div>
 
-<% include partials/footer %>
+<% include ../partials/footer %>

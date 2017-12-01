@@ -4,7 +4,7 @@ var express        = require("express"),
     mongoose       = require("mongoose"),
     Event          = require("./models/event"),
     populateDB     = require("./populate"),
-    // Comment        = require("./models/comment"),
+    Comment        = require("./models/comment"),
     passport       = require("passport"),
     LocalStrategy  = require("passport-local"),
     // User           = require("./models/user"),
@@ -53,24 +53,6 @@ app.get("/", function(req, res) {
 
 
 
-// Event.create(
-//     {
-//         name:"Fucking whatever",
-//         datetime: "Norvember 20th 2017",
-//         place: "Ohiro",
-//         image: "https://www.w3schools.com/w3css/img_fjords.jpg",
-//         type: "Cardinal",
-//         desc: "Blah brrlah blah"
-//     }, function(err, event) {
-//         if(err) {
-//             console.log(err);
-//         } else {
-//             console.log("Created event");
-//             console.log(event);
-//         }
-//     }
-// );
-
 
 
 app.get("/events", function(req, res) {
@@ -79,7 +61,7 @@ app.get("/events", function(req, res) {
         if(err) {
             console.log(err);
         } else {
-            res.render("events", {events: allEvents});
+            res.render("events/events", {events: allEvents});
         }
     });
 });
@@ -108,22 +90,59 @@ app.post("/events", function(req, res) {
 });
 
 app.get("/events/new", function(req, res) {
-    res.render("new");
+    res.render("events/new");
 });
 
 // SHOW
 app.get("/events/:id", function(req, res) {
-    // find event with appropriate ID
-    Event.findById(req.params.id, function(err, foundEvent) {
+    // Find the event with the specific ID.
+    Event.findById(req.params.id).populate("comments").exec(function(err, foundEvent) {
         if(err) {
             console.log(err);
         } else {
-            // render show
-            res.render("show", {event: foundEvent});       
+            console.log(foundEvent);
+            // That show template will be rendered for the event.
+            res.render("events/show", {event: foundEvent});
         }
     });
 });
 
+
+
+
+
+// COMMENTS //
+app.get("/events/:id/comments/new", function(req, res) {
+    // find the event through id
+    Event.findById(req.params.id, function(err, event) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", {event: event});    
+        }
+    });
+});
+
+
+app.post("/events/:id/comments", function(req, res) {
+    // find event by id
+    Event.findById(req.params.id, function(err, event) {
+        if(err) {
+            console.log(err);
+            res.redirect("/events");
+        } else {
+            Comment.create(req.body.comment, function(err, comment) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    event.comments.push(comment);
+                    event.save();
+                    res.redirect("/events/" + event._id);
+                }
+            });
+        }
+    });
+});
 
 // With this, our app won't crash when trying to access a route/link that doesn't
 // exist. We will serve up a template.
