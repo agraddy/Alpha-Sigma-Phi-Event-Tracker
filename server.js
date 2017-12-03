@@ -7,8 +7,12 @@ var express        = require("express"),
     Comment        = require("./models/comment"),
     passport       = require("passport"),
     LocalStrategy  = require("passport-local"),
-    // User           = require("./models/user"),
-    methodOverride = require("method-override");
+    User           = require("./models/user"),
+    methodOverride = require("method-override"),
+    
+    authRoutes     = require("./routes/auth"),
+    commentRoutes  = require("./routes/comments"),
+    eventRoutes    = require("./routes/events");
     
 
 mongoose.connect("mongodb://localhost/asp_events");
@@ -46,6 +50,25 @@ app.set("view engine", "ejs");
 // app.use(methodOverride("_method"));
 populateDB();
 
+app.use(require("express-session")({
+    secret: "Gandiva",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use(function(req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
+app.use("/", authRoutes);
+app.use("/events/:id/comments/", commentRoutes);
+app.use("/events", eventRoutes);
+
 
 app.get("/", function(req, res) {
     res.render("home");
@@ -54,96 +77,6 @@ app.get("/", function(req, res) {
 
 
 
-
-app.get("/events", function(req, res) {
-    // Get all the events
-    Event.find({}, function(err, allEvents){
-        if(err) {
-            console.log(err);
-        } else {
-            res.render("events/events", {events: allEvents});
-        }
-    });
-});
-
-
-app.post("/events", function(req, res) {
-    // get data from form and add to events array.
-    var name = req.body.name;
-    var type = req.body.type;
-    var datetime = req.body.datetime;
-    var place = req.body.place;
-    var image = req.body.image;
-    var desc = req.body.desc;
-    
-    // Object blueprint
-    var newEvent = {name: name, datetime: datetime, place: place, image: image, type: type, desc: desc};
-    
-    // CREATE new event
-    Event.create(newEvent, function(err, newlyCreated) {
-         if(err) {
-             console.log(err);
-         } else {
-             res.redirect("/events");
-         }
-    });
-});
-
-app.get("/events/new", function(req, res) {
-    res.render("events/new");
-});
-
-// SHOW
-app.get("/events/:id", function(req, res) {
-    // Find the event with the specific ID.
-    Event.findById(req.params.id).populate("comments").exec(function(err, foundEvent) {
-        if(err) {
-            console.log(err);
-        } else {
-            console.log(foundEvent);
-            // That show template will be rendered for the event.
-            res.render("events/show", {event: foundEvent});
-        }
-    });
-});
-
-
-
-
-
-// COMMENTS //
-app.get("/events/:id/comments/new", function(req, res) {
-    // find the event through id
-    Event.findById(req.params.id, function(err, event) {
-        if(err) {
-            console.log(err);
-        } else {
-            res.render("comments/new", {event: event});    
-        }
-    });
-});
-
-
-app.post("/events/:id/comments", function(req, res) {
-    // find event by id
-    Event.findById(req.params.id, function(err, event) {
-        if(err) {
-            console.log(err);
-            res.redirect("/events");
-        } else {
-            Comment.create(req.body.comment, function(err, comment) {
-                if(err) {
-                    console.log(err);
-                } else {
-                    event.comments.push(comment);
-                    event.save();
-                    res.redirect("/events/" + event._id);
-                }
-            });
-        }
-    });
-});
-
 // With this, our app won't crash when trying to access a route/link that doesn't
 // exist. We will serve up a template.
 // This must always be the last route otherwise it will always load before other
@@ -151,14 +84,6 @@ app.post("/events/:id/comments", function(req, res) {
 // app.get("/*", function(req, res) {
 //   res.render("unknown");
 // });
-
-function loggedIn(req, res, next) {
-    if(req.isAuthenticated()) {
-        return next();    
-    }
-    res.redirect("/login");
-}
-
 
 
 var port = process.env.PORT || 3000;
