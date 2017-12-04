@@ -15,7 +15,7 @@ router.get("/", function(req, res) {
 });
 
 
-router.post("/", function(req, res) {
+router.post("/", loggedIn, function(req, res) {
     // get data from form and add to events array.
     var name = req.body.name;
     var type = req.body.type;
@@ -24,8 +24,13 @@ router.post("/", function(req, res) {
     var image = req.body.image;
     var desc = req.body.desc;
     
+    var author = {
+        id: req.user._id,
+        username: req.user.username
+    };
+    
     // Object blueprint
-    var newEvent = {name: name, datetime: datetime, place: place, image: image, type: type, desc: desc};
+    var newEvent = {name: name, datetime: datetime, place: place, image: image, type: type, desc: desc, author: author};
     
     // CREATE new event
     Event.create(newEvent, function(err, newlyCreated) {
@@ -37,7 +42,7 @@ router.post("/", function(req, res) {
     });
 });
 
-router.get("/new", function(req, res) {
+router.get("/new", loggedIn, function(req, res) {
     res.render("events/new");
 });
 

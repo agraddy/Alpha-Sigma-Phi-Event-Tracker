@@ -42,12 +42,12 @@
                 <div class="thumbnail">
                     <img class="img-responsive" src="<%= event.image %>">
                     <div class="caption-full">
-                        <h4 class="pull-right"><p>Type: <%= event.type %> </p></h4>
+                        <h4 class="pull-right"><p><strong>Type: </strong><%= event.type %> </p></h4>
                         <h3><%= event.name %></h3>
-                        <p>Place: <%= event.place %></p>
-                        <p>Date & Time: <%= event.datetime %></p>
+                        <p><strong>Place: </strong><%= event.place %></p>
+                        <p><strong>Date & Time: </strong><%= event.datetime %></p>
                         <p><%= event.desc %></p>
-                        <!--<p>Submitted by: <//%= event.author.username %></p>-->
+                        <p><strong>Submitted by: </strong><%= event.author.username %></p>
                     </div>
                 </div>
                 
@@ -59,7 +59,7 @@
                     <% event.comments.forEach(function(comment) { %>
                         <div class="row">
                             <div class="col-md-12">
-                                <strong><%= comment.author %></strong>
+                                <strong><%= comment.author.username %></strong>
                                 <span class="pull-right">5 days ago</span>
                                 <p><%= comment.text %></p>
                             </div>
