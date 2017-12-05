@@ -47,7 +47,7 @@ app.use(express.static(__dirname + "/bower_components"));
 
 // default view engine so we don't need to constantly type ".ejs"
 app.set("view engine", "ejs");
-// app.use(methodOverride("_method"));
+app.use(methodOverride("_method"));
 // populateDB();
 
 app.use(require("express-session")({

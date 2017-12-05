@@ -60,6 +60,43 @@ router.get("/:id", function(req, res) {
     });
 });
 
+// EDIT
+router.get("/:id/edit", function(req, res) {
+    Event.findById(req.params.id, function(err, foundEvent) {
+        if(err) {
+            res.redirect("/events");
+        } else {
+            res.render("events/edit", {event: foundEvent});    
+        }
+    });
+});
+
+
+// UPDATE
+router.put("/:id", function(req, res) {
+    // find and update correct event
+    Event.findByIdAndUpdate(req.params.id, req.body.event, function(err, updatedEvent) {
+        if(err) {
+            res.redirect("/events");
+        } else {
+            res.redirect("/events/" + req.params.id);
+        }
+    });
+});
+
+
+// DELETE
+router.delete("/:id", function(req, res) {
+    Event.findByIdAndRemove(req.params.id, function(err) {
+        if(err) {
+            res.redirect("/events");
+        } else {
+            res.redirect("/events");
+        }
+    });
+});
+
+
 function loggedIn(req, res, next) {
     if(req.isAuthenticated()) {
         return next();    

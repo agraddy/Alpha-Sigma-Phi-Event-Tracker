@@ -17,3 +17,7 @@
 .thumbnail .caption-full {
     padding: 10px;
 }
+
+#dltBtn {
+    display: inline;
+}

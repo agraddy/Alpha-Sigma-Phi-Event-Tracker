@@ -42,6 +42,7 @@ router.post("/", loggedIn, function(req, res) {
     });
 });
 
+
 function loggedIn(req, res, next) {
     if(req.isAuthenticated()) {
         return next();    
