@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var Event  = require("../models/event");
+var middleware = require("../middleware");
+
 
 router.get("/", function(req, res) {
     // console.log(req.user);
@@ -15,7 +17,7 @@ router.get("/", function(req, res) {
 });
 
 
-router.post("/", loggedIn, function(req, res) {
+router.post("/", middleware.loggedIn, function(req, res) {
     // get data from form and add to events array.
     var name = req.body.name;
     var type = req.body.type;
@@ -42,7 +44,7 @@ router.post("/", loggedIn, function(req, res) {
     });
 });
 
-router.get("/new", loggedIn, function(req, res) {
+router.get("/new", middleware.loggedIn, function(req, res) {
     res.render("events/new");
 });
 
@@ -62,7 +64,7 @@ router.get("/:id", function(req, res) {
 
 
 // EDIT
-router.get("/:id/edit", checkEventOwnership, function(req, res) {
+router.get("/:id/edit", middleware.checkEventOwnership, function(req, res) {
     Event.findById(req.params.id, function(err, foundEvent) {
         res.render("events/edit", {event: foundEvent});
     });
@@ -70,7 +72,7 @@ router.get("/:id/edit", checkEventOwnership, function(req, res) {
 
 
 // UPDATE
-router.put("/:id", checkEventOwnership, function(req, res) {
+router.put("/:id", middleware.checkEventOwnership, function(req, res) {
     // find and update correct event
     Event.findByIdAndUpdate(req.params.id, req.body.event, function(err, updatedEvent) {
         if(err) {
@@ -83,7 +85,7 @@ router.put("/:id", checkEventOwnership, function(req, res) {
 
 
 // DELETE
-router.delete("/:id", checkEventOwnership, function(req, res) {
+router.delete("/:id", middleware.checkEventOwnership, function(req, res) {
     Event.findByIdAndRemove(req.params.id, function(err) {
         if(err) {
             res.redirect("/events");
@@ -93,34 +95,5 @@ router.delete("/:id", checkEventOwnership, function(req, res) {
     });
 });
 
-
-function loggedIn(req, res, next) {
-    if(req.isAuthenticated()) {
-        return next();    
-    }
-    res.redirect("/login");
-}
-
-
-function checkEventOwnership(req, res, next) {
-    // Check if user is logged in. Then check if
-    // owner is the author of the post.
-    if (req.isAuthenticated()) {
-        Event.findById(req.params.id, function(err, foundEvent) {
-            if (err) {
-                res.redirect("back");
-                
-            } else if (foundEvent.author.id.equals(req.user._id)) {
-                next();
-
-            } else {
-                res.redirect("back");
-            }
-        });
-    
-    } else {
-        res.redirect("back");
-    }
-}
 
 module.exports = router;
