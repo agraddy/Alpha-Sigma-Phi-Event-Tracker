@@ -50,11 +50,13 @@ app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 // populateDB();
 
+
 app.use(require("express-session")({
     secret: "Gandiva",
     resave: false,
     saveUninitialized: false
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -65,6 +67,8 @@ app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
     next();
 });
+
+
 app.use("/", authRoutes);
 app.use("/events/:id/comments/", commentRoutes);
 app.use("/events", eventRoutes);
