@@ -23,6 +23,7 @@ router.post("/", middleware.loggedIn, function(req, res) {
     Event.findById(req.params.id, function(err, event) {
         if(err) {
             console.log(err);
+            req.flash("failure", "Can't create a comment for a non-existent event!");
             res.redirect("/events");
         } else {
             Comment.create(req.body.comment, function(err, comment) {
@@ -36,6 +37,7 @@ router.post("/", middleware.loggedIn, function(req, res) {
                     comment.save();
                     event.comments.push(comment);
                     event.save();
+                    req.flash("success", "Comment added.");
                     res.redirect("/events/" + event._id);
                 }
             });

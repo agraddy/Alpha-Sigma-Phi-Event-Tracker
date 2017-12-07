@@ -9,6 +9,7 @@ var express        = require("express"),
     LocalStrategy  = require("passport-local"),
     User           = require("./models/user"),
     methodOverride = require("method-override"),
+    flash          = require("connect-flash"),
     
     authRoutes     = require("./routes/auth"),
     commentRoutes  = require("./routes/comments"),
@@ -21,6 +22,7 @@ mongoose.connect("mongodb://localhost/asp_events");
 var fs = require("fs");
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(flash());
 
 // The purpose of this middleware is to log our server activity for debugging
 // purposes. All activity will be stored in server.log
@@ -65,6 +67,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
+    res.locals.success = req.flash("success");
+    res.locals.failure = req.flash("failure");
     next();
 });
 
