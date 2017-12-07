@@ -91,7 +91,7 @@ router.delete("/:id", middleware.checkEventOwnership, function(req, res) {
         if(err) {
             res.redirect("/events");
         } else {
-            req.flash("success", "Event deleted.")
+            req.flash("success", "Event deleted.");
             res.redirect("/events");
         }
     });
