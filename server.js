@@ -15,10 +15,10 @@ var express        = require("express"),
     commentRoutes  = require("./routes/comments"),
     eventRoutes    = require("./routes/events");
     
+// console.log(process.env.DBURL);
+var db = process.env.DBURL || "mongodb://localhost/asp_events"
+mongoose.connect(db);
 
-// mongoose.connect("mongodb://localhost/asp_events");
-mongoose.connect("mongodb://edgehead178:Gandiva4414@ds133776.mlab.com:33776/asp_fresno");
-    
 // File system
 var fs = require("fs");
 
