@@ -16,7 +16,8 @@ var express        = require("express"),
     eventRoutes    = require("./routes/events");
     
 
-mongoose.connect("mongodb://localhost/asp_events");
+// mongoose.connect("mongodb://localhost/asp_events");
+mongoose.connect("mongodb://edgehead178:Gandiva4414@ds133776.mlab.com:33776/asp_fresno");
     
 // File system
 var fs = require("fs");
