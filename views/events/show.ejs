@@ -46,6 +46,11 @@
                         <h3><%= event.name %></h3>
                         <p><strong>Place: </strong><%= event.place %></p>
                         <p><strong>Date & Time: </strong><%= event.datetime %></p>
+                        <p><strong>Venue: </strong>
+				<% event.venues.forEach(function(venue) { %>
+				<%= venue.name %><br>
+				<% }); %>
+			</p>
                         <p><%= event.desc %></p>
                         <p><strong>Submitted by: </strong><%= event.author.username %></p>
                         

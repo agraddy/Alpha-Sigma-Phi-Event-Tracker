@@ -21,6 +21,14 @@ var eventSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
         }    
+    ],
+    venues: [
+    {id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Venue"
+        },
+        name: String
+    }
     ]
 });
 

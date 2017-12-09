@@ -10,6 +10,9 @@
             <p>
                 <a class="btn btn-danger btn-large" href="/events/new">Add an Event</a>
             </p>
+            <p>
+                <a class="btn btn-danger btn-large" href="/venues/new">Add a Venue</a>
+            </p>
         </div>
     </header>
     
@@ -23,6 +26,11 @@
                         <h5>Event Type: <%= event.type %></h5>
                         <h5>Date & Time: <%= event.datetime %></h5>
                         <h5>Location: <%= event.place %></h5>
+                        <h5>Venue: 
+				<% event.venues.forEach(function(venue) { %>
+				<%= venue.name %><br>
+				<% }); %>
+			</h5>
                     </div>
                     <p>
                         <a href="/events/<%= event._id %>" class="btn btn-primary">More Info</a>

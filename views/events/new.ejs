@@ -64,6 +64,14 @@
                             Image URL: <br>
                             <input class="form-control" type="text" name="image" placeholder="Image URL" required>
                         </div>
+
+                        <div class="form-group">    
+                            Venues: <br>
+				<% venues.forEach(function(venue) { %>
+				<label><input type="checkbox" name="venues[]" value="<%= venue._id %>;<%= venue.name %>" /> <%= venue.name %></label>
+				<% }); %>
+			  </select>
+                        </div>
                             
                         <div class="form-group">    
                             <button class="btn btn-lg btn-primary btn-block">Submit</button>

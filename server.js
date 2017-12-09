@@ -5,6 +5,7 @@ var express        = require("express"),
     Event          = require("./models/event"),
     populateDB     = require("./populate"),
     Comment        = require("./models/comment"),
+    Venue          = require("./models/venue"),
     passport       = require("passport"),
     LocalStrategy  = require("passport-local"),
     User           = require("./models/user"),
@@ -14,6 +15,7 @@ var express        = require("express"),
     authRoutes     = require("./routes/auth"),
     commentRoutes  = require("./routes/comments"),
     eventRoutes    = require("./routes/events");
+    venueRoutes    = require("./routes/venues");
     
 // console.log(process.env.DBURL);
 var db = process.env.DBURL || "mongodb://localhost/asp_events"
@@ -77,6 +79,8 @@ app.use(function(req, res, next) {
 app.use("/", authRoutes);
 app.use("/events/:id/comments/", commentRoutes);
 app.use("/events", eventRoutes);
+
+app.use("/venues", venueRoutes);
 
 
 app.get("/", function(req, res) {
